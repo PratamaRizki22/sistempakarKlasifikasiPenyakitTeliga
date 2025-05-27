@@ -1,0 +1,93 @@
+{
+  "diseases": {
+    "P01": {
+      "name": "Otitis Eksterna (Swimmer's Ear)",
+      "symptoms": [
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05"
+      ],
+      "info": "Peradangan pada saluran telinga luar yang sering disebabkan oleh infeksi bakteri atau jamur.",
+      "solution": "Hindari masuknya air ke telinga, gunakan obat tetes telinga sesuai resep dokter, dan jaga kebersihan telinga. Segera konsultasi ke dokter THT."
+    },
+    "P02": {
+      "name": "Otitis Media Akut",
+      "symptoms": [
+        "G06",
+        "G07",
+        "G08",
+        "G09",
+        "G10"
+      ],
+      "info": "Peradangan telinga tengah yang sering terjadi pada anak-anak, disebabkan oleh infeksi bakteri atau virus.",
+      "solution": "Istirahat yang cukup, kompres hangat, obat pereda nyeri sesuai dosis, dan antibiotik jika diperlukan. Konsultasi dengan dokter THT untuk penanganan lebih lanjut."
+    },
+    "P03": {
+      "name": "Serumen Prop (Kotoran Telinga Mengeras)",
+      "symptoms": [
+        "G11",
+        "G12",
+        "G13",
+        "G14"
+      ],
+      "info": "Penumpukan kotoran telinga yang mengeras dan menyumbat saluran telinga.",
+      "solution": "Jangan membersihkan dengan cotton bud. Gunakan obat pelembut serumen atau konsultasi ke dokter untuk pembersihan profesional."
+    },
+    "P04": {
+      "name": "Tinnitus (Telinga Berdenging)",
+      "symptoms": [
+        "G15",
+        "G16",
+        "G11",
+        "G17"
+      ],
+      "info": "Sensasi mendengar suara berdenging, berdesis, atau berdesir tanpa sumber suara eksternal.",
+      "solution": "Hindari kebisingan berlebihan, kelola stress, cukup tidur, dan konsultasi dengan dokter untuk mengetahui penyebab dasarnya."
+    },
+    "P05": {
+      "name": "Vertigo Perifer",
+      "symptoms": [
+        "G18",
+        "G16",
+        "G10",
+        "G17"
+      ],
+      "info": "Gangguan keseimbangan yang berasal dari telinga bagian dalam, menyebabkan sensasi berputar.",
+      "solution": "Istirahat dalam posisi yang nyaman, hindari gerakan mendadak, minum obat anti vertigo sesuai resep dokter."
+    },
+    "P06": {
+      "name": "Barotrauma Telinga",
+      "symptoms": [
+        "G06",
+        "G11",
+        "G02",
+        "G13"
+      ],
+      "info": "Cedera telinga akibat perubahan tekanan udara yang tiba-tiba, sering terjadi saat naik pesawat.",
+      "solution": "Lakukan manuver Valsalva dengan hati-hati, kunyah permen karet, atau konsultasi dokter jika nyeri berlanjut."
+    }
+  },
+  "symptoms": {
+    "G01": "Nyeri telinga yang tajam dan berdenyut",
+    "G02": "Gatal pada telinga",
+    "G03": "Keluarnya cairan dari telinga",
+    "G04": "Pembengkakan di sekitar telinga",
+    "G05": "Sensitivitas saat menyentuh telinga",
+    "G06": "Nyeri telinga yang dalam",
+    "G07": "Demam tinggi",
+    "G08": "Telinga terasa penuh",
+    "G09": "Gangguan pendengaran sementara",
+    "G10": "Mual atau muntah",
+    "G11": "Pendengaran berkurang",
+    "G12": "Telinga terasa tersumbat",
+    "G13": "Sensasi penuh di telinga",
+    "G14": "Bau tidak sedap dari telinga",
+    "G15": "Telinga berdenging terus-menerus",
+    "G16": "Pusing atau vertigo",
+    "G17": "Sulit berkonsentrasi",
+    "G18": "Kehilangan keseimbangan"
+  },
+  "last_updated": "2025-05-27T11:27:48.745005"
+}
