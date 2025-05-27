@@ -208,6 +208,27 @@ class EarDiagnosisSystem:
         self.is_user_logged_in = False
         return "Logout berhasil!"
 
+    # Fungsi untuk dropdown
+    def get_symptoms_for_dropdown(self):
+        """Ambil daftar gejala untuk dropdown"""
+        return [f"{code}: {desc}" for code, desc in self.symptoms.items()]
+    
+    def get_symptom_code_from_dropdown(self, dropdown_value):
+        """Ekstrak kode gejala dari nilai dropdown"""
+        if dropdown_value:
+            return dropdown_value.split(":")[0].strip()
+        return None
+    
+    def get_diseases_for_dropdown(self):
+        """Ambil daftar penyakit untuk dropdown"""
+        return [f"{code}: {disease['name']}" for code, disease in self.diseases.items()]
+    
+    def get_disease_code_from_dropdown(self, dropdown_value):
+        """Ekstrak kode penyakit dari nilai dropdown"""
+        if dropdown_value:
+            return dropdown_value.split(":")[0].strip()
+        return None
+
     # CRUD Operations untuk Gejala
     def add_symptom(self, symptom_id, symptom_desc):
         """Tambah gejala baru"""
@@ -226,10 +247,14 @@ class EarDiagnosisSystem:
         else:
             return "❌ Gagal menyimpan data!"
 
-    def update_symptom(self, symptom_id, new_desc):
+    def update_symptom(self, symptom_dropdown, new_desc):
         """Update gejala"""
         if not self.is_admin_logged_in:
             return "❌ Akses ditolak! Silakan login sebagai admin terlebih dahulu."
+        
+        symptom_id = self.get_symptom_code_from_dropdown(symptom_dropdown)
+        if not symptom_id:
+            return "❌ Silakan pilih gejala yang akan diupdate!"
         
         if symptom_id not in self.symptoms:
             return f"❌ Gejala dengan ID {symptom_id} tidak ditemukan!"
@@ -244,10 +269,14 @@ class EarDiagnosisSystem:
         else:
             return "❌ Gagal menyimpan data!"
 
-    def delete_symptom(self, symptom_id):
+    def delete_symptom(self, symptom_dropdown):
         """Hapus gejala"""
         if not self.is_admin_logged_in:
             return "❌ Akses ditolak! Silakan login sebagai admin terlebih dahulu."
+        
+        symptom_id = self.get_symptom_code_from_dropdown(symptom_dropdown)
+        if not symptom_id:
+            return "❌ Silakan pilih gejala yang akan dihapus!"
         
         if symptom_id not in self.symptoms:
             return f"❌ Gejala dengan ID {symptom_id} tidak ditemukan!"
@@ -280,14 +309,12 @@ class EarDiagnosisSystem:
             return f"❌ Penyakit dengan ID {disease_id} sudah ada!"
         
         # Parse symptoms list
+        symptom_ids = []
         if symptoms_list:
-            symptom_ids = [s.strip() for s in symptoms_list.split(',')]
-            # Validasi symptom IDs
-            invalid_symptoms = [s for s in symptom_ids if s not in self.symptoms]
-            if invalid_symptoms:
-                return f"❌ Gejala tidak valid: {', '.join(invalid_symptoms)}"
-        else:
-            symptom_ids = []
+            for symptom in symptoms_list:
+                symptom_id = self.get_symptom_code_from_dropdown(symptom)
+                if symptom_id:
+                    symptom_ids.append(symptom_id)
         
         self.diseases[disease_id] = {
             'name': disease_name,
@@ -301,23 +328,25 @@ class EarDiagnosisSystem:
         else:
             return "❌ Gagal menyimpan data!"
 
-    def update_disease(self, disease_id, disease_name, disease_info, disease_solution, symptoms_list):
+    def update_disease(self, disease_dropdown, disease_name, disease_info, disease_solution, symptoms_list):
         """Update penyakit"""
         if not self.is_admin_logged_in:
             return "❌ Akses ditolak! Silakan login sebagai admin terlebih dahulu."
+        
+        disease_id = self.get_disease_code_from_dropdown(disease_dropdown)
+        if not disease_id:
+            return "❌ Silakan pilih penyakit yang akan diupdate!"
         
         if disease_id not in self.diseases:
             return f"❌ Penyakit dengan ID {disease_id} tidak ditemukan!"
         
         # Parse symptoms list
+        symptom_ids = []
         if symptoms_list:
-            symptom_ids = [s.strip() for s in symptoms_list.split(',')]
-            # Validasi symptom IDs
-            invalid_symptoms = [s for s in symptom_ids if s not in self.symptoms]
-            if invalid_symptoms:
-                return f"❌ Gejala tidak valid: {', '.join(invalid_symptoms)}"
-        else:
-            symptom_ids = []
+            for symptom in symptoms_list:
+                symptom_id = self.get_symptom_code_from_dropdown(symptom)
+                if symptom_id:
+                    symptom_ids.append(symptom_id)
         
         self.diseases[disease_id].update({
             'name': disease_name or self.diseases[disease_id]['name'],
@@ -331,10 +360,14 @@ class EarDiagnosisSystem:
         else:
             return "❌ Gagal menyimpan data!"
 
-    def delete_disease(self, disease_id):
+    def delete_disease(self, disease_dropdown):
         """Hapus penyakit"""
         if not self.is_admin_logged_in:
             return "❌ Akses ditolak! Silakan login sebagai admin terlebih dahulu."
+        
+        disease_id = self.get_disease_code_from_dropdown(disease_dropdown)
+        if not disease_id:
+            return "❌ Silakan pilih penyakit yang akan dihapus!"
         
         if disease_id not in self.diseases:
             return f"❌ Penyakit dengan ID {disease_id} tidak ditemukan!"
@@ -531,25 +564,33 @@ def create_gradio_interface():
                             )
                         
                         with gr.TabItem("✏️ Edit Gejala"):
-                            edit_symptom_id = gr.Textbox(label="ID Gejala", placeholder="G01")
+                            edit_symptom_dropdown = gr.Dropdown(
+                                label="Pilih Gejala yang akan diupdate",
+                                choices=system.get_symptoms_for_dropdown(),
+                                interactive=True
+                            )
                             edit_symptom_desc = gr.Textbox(label="Deskripsi Baru", placeholder="Deskripsi gejala baru...")
                             edit_symptom_btn = gr.Button("✏️ Update Gejala", variant="secondary")
                             edit_symptom_result = gr.Markdown()
                             
                             edit_symptom_btn.click(
                                 fn=system.update_symptom,
-                                inputs=[edit_symptom_id, edit_symptom_desc],
+                                inputs=[edit_symptom_dropdown, edit_symptom_desc],
                                 outputs=edit_symptom_result
                             )
                         
                         with gr.TabItem("🗑️ Hapus Gejala"):
-                            delete_symptom_id = gr.Textbox(label="ID Gejala", placeholder="G01")
+                            delete_symptom_dropdown = gr.Dropdown(
+                                label="Pilih Gejala yang akan dihapus",
+                                choices=system.get_symptoms_for_dropdown(),
+                                interactive=True
+                            )
                             delete_symptom_btn = gr.Button("🗑️ Hapus Gejala", variant="stop")
                             delete_symptom_result = gr.Markdown()
                             
                             delete_symptom_btn.click(
                                 fn=system.delete_symptom,
-                                inputs=[delete_symptom_id],
+                                inputs=[delete_symptom_dropdown],
                                 outputs=delete_symptom_result
                             )
                         
@@ -571,7 +612,12 @@ def create_gradio_interface():
                             add_disease_name = gr.Textbox(label="Nama Penyakit", placeholder="Nama penyakit...")
                             add_disease_info = gr.Textbox(label="Informasi Penyakit", lines=3, placeholder="Deskripsi penyakit...")
                             add_disease_solution = gr.Textbox(label="Solusi/Pengobatan", lines=3, placeholder="Cara pengobatan...")
-                            add_disease_symptoms = gr.Textbox(label="Gejala (pisahkan dengan koma)", placeholder="G01,G02,G03")
+                            add_disease_symptoms = gr.Dropdown(
+                                label="Gejala (bisa pilih banyak)",
+                                choices=system.get_symptoms_for_dropdown(),
+                                multiselect=True,
+                                interactive=True
+                            )
                             add_disease_btn = gr.Button("➕ Tambah Penyakit", variant="primary")
                             add_disease_result = gr.Markdown()
                             
@@ -582,28 +628,41 @@ def create_gradio_interface():
                             )
                         
                         with gr.TabItem("✏️ Edit Penyakit"):
-                            edit_disease_id = gr.Textbox(label="ID Penyakit", placeholder="P01")
+                            edit_disease_dropdown = gr.Dropdown(
+                                label="Pilih Penyakit yang akan diupdate",
+                                choices=system.get_diseases_for_dropdown(),
+                                interactive=True
+                            )
                             edit_disease_name = gr.Textbox(label="Nama Penyakit (kosongkan jika tidak diubah)")
                             edit_disease_info = gr.Textbox(label="Informasi Penyakit (kosongkan jika tidak diubah)", lines=3)
                             edit_disease_solution = gr.Textbox(label="Solusi/Pengobatan (kosongkan jika tidak diubah)", lines=3)
-                            edit_disease_symptoms = gr.Textbox(label="Gejala (pisahkan dengan koma, kosongkan jika tidak diubah)")
+                            edit_disease_symptoms = gr.Dropdown(
+                                label="Gejala (bisa pilih banyak, kosongkan jika tidak diubah)",
+                                choices=system.get_symptoms_for_dropdown(),
+                                multiselect=True,
+                                interactive=True
+                            )
                             edit_disease_btn = gr.Button("✏️ Update Penyakit", variant="secondary")
                             edit_disease_result = gr.Markdown()
                             
                             edit_disease_btn.click(
                                 fn=system.update_disease,
-                                inputs=[edit_disease_id, edit_disease_name, edit_disease_info, edit_disease_solution, edit_disease_symptoms],
+                                inputs=[edit_disease_dropdown, edit_disease_name, edit_disease_info, edit_disease_solution, edit_disease_symptoms],
                                 outputs=edit_disease_result
                             )
                         
                         with gr.TabItem("🗑️ Hapus Penyakit"):
-                            delete_disease_id = gr.Textbox(label="ID Penyakit", placeholder="P01")
+                            delete_disease_dropdown = gr.Dropdown(
+                                label="Pilih Penyakit yang akan dihapus",
+                                choices=system.get_diseases_for_dropdown(),
+                                interactive=True
+                            )
                             delete_disease_btn = gr.Button("🗑️ Hapus Penyakit", variant="stop")
                             delete_disease_result = gr.Markdown()
                             
                             delete_disease_btn.click(
                                 fn=system.delete_disease,
-                                inputs=[delete_disease_id],
+                                inputs=[delete_disease_dropdown],
                                 outputs=delete_disease_result
                             )
                         
