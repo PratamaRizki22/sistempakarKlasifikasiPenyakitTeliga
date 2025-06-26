@@ -1,93 +1,92 @@
 {
   "diseases": {
     "P01": {
-      "name": "Otitis Eksterna (Swimmer's Ear)",
-      "symptoms": [
-        "G01",
-        "G02",
-        "G03",
-        "G04",
-        "G05"
-      ],
-      "info": "Peradangan pada saluran telinga luar yang sering disebabkan oleh infeksi bakteri atau jamur.",
-      "solution": "Hindari masuknya air ke telinga, gunakan obat tetes telinga sesuai resep dokter, dan jaga kebersihan telinga. Segera konsultasi ke dokter THT."
+      "name": "Otitis Eksterna",
+      "symptoms": {
+        "G01": 0.8,
+        "G02": 0.7,
+        "G03": 0.6,
+        "G04": 0.5,
+        "G05": 0.4,
+        "G06": 0.5,
+        "G07": 0.7,
+        "G11": 0.7
+      },
+      "info": "Kombinasi gejala yang mengarah pada kemungkinan infeksi telinga luar atau peradangan luas.",
+      "solution": "Jaga telinga tetap kering, hindari mengorek telinga. Segera konsultasikan dengan dokter THT untuk mendapatkan resep obat tetes atau antibiotik yang sesuai.",
+      "severity": "Tinggi",
+      "duration": "1-2 minggu"
     },
     "P02": {
-      "name": "Otitis Media Akut",
-      "symptoms": [
-        "G06",
-        "G07",
-        "G08",
-        "G09",
-        "G10"
-      ],
-      "info": "Peradangan telinga tengah yang sering terjadi pada anak-anak, disebabkan oleh infeksi bakteri atau virus.",
-      "solution": "Istirahat yang cukup, kompres hangat, obat pereda nyeri sesuai dosis, dan antibiotik jika diperlukan. Konsultasi dengan dokter THT untuk penanganan lebih lanjut."
+      "name": "Otitis Media",
+      "symptoms": {
+        "G04": 0.8,
+        "G05": 0.6,
+        "G06": 0.4,
+        "G07": 0.7,
+        "G08": 0.6,
+        "G10": 0.4,
+        "G12": 0.6
+      },
+      "info": "Gejala-gejala ini sering dikaitkan dengan infeksi pada telinga bagian tengah (Otitis Media), terutama jika ada demam dan pilek.",
+      "solution": "Dibutuhkan pemeriksaan oleh dokter untuk konfirmasi. Penanganan bisa meliputi antibiotik dan pereda nyeri. Kompres hangat dapat membantu meringankan nyeri.",
+      "severity": "Tinggi",
+      "duration": "5-10 hari"
     },
     "P03": {
-      "name": "Serumen Prop (Kotoran Telinga Mengeras)",
-      "symptoms": [
-        "G11",
-        "G12",
-        "G13",
-        "G14"
-      ],
-      "info": "Penumpukan kotoran telinga yang mengeras dan menyumbat saluran telinga.",
-      "solution": "Jangan membersihkan dengan cotton bud. Gunakan obat pelembut serumen atau konsultasi ke dokter untuk pembersihan profesional."
+      "name": "Gendang telinga pecah",
+      "symptoms": {
+        "G05": 0.6,
+        "G09": 0.5,
+        "G10": 0.6,
+        "G11": 0.7
+      },
+      "info": "Kombinasi gangguan pendengaran, vertigo, dan telinga berdenging sering terkait dengan masalah pada telinga bagian dalam.",
+      "solution": "Hindari gerakan kepala yang tiba-tiba. Konsultasikan dengan dokter untuk evaluasi fungsi pendengaran dan keseimbangan.",
+      "severity": "Sedang",
+      "duration": "Bervariasi"
     },
     "P04": {
-      "name": "Tinnitus (Telinga Berdenging)",
-      "symptoms": [
-        "G15",
-        "G16",
-        "G11",
-        "G17"
-      ],
-      "info": "Sensasi mendengar suara berdenging, berdesis, atau berdesir tanpa sumber suara eksternal.",
-      "solution": "Hindari kebisingan berlebihan, kelola stress, cukup tidur, dan konsultasi dengan dokter untuk mengetahui penyebab dasarnya."
+      "name": "kolesteatoma",
+      "symptoms": {
+        "G03": 0.6,
+        "G04": 0.8,
+        "G05": 0.5,
+        "G06": 0.7,
+        "G10": 0.6,
+        "G11": 0.4
+      },
+      "info": "Pola gejala yang kompleks melibatkan infeksi (cairan), nyeri, sumbatan, dan gangguan pendengaran.",
+      "solution": "Kondisi ini memerlukan evaluasi medis yang cermat. Jangan tunda untuk mengunjungi dokter THT untuk diagnosis yang akurat dan penanganan yang komprehensif.",
+      "severity": "Tinggi",
+      "duration": "Bervariasi"
     },
     "P05": {
-      "name": "Vertigo Perifer",
-      "symptoms": [
-        "G18",
-        "G16",
-        "G10",
-        "G17"
-      ],
-      "info": "Gangguan keseimbangan yang berasal dari telinga bagian dalam, menyebabkan sensasi berputar.",
-      "solution": "Istirahat dalam posisi yang nyaman, hindari gerakan mendadak, minum obat anti vertigo sesuai resep dokter."
-    },
-    "P06": {
-      "name": "Barotrauma Telinga",
-      "symptoms": [
-        "G06",
-        "G11",
-        "G02",
-        "G13"
-      ],
-      "info": "Cedera telinga akibat perubahan tekanan udara yang tiba-tiba, sering terjadi saat naik pesawat.",
-      "solution": "Lakukan manuver Valsalva dengan hati-hati, kunyah permen karet, atau konsultasi dokter jika nyeri berlanjut."
+      "name": "Presbikusis",
+      "symptoms": {
+        "G04": 0.5,
+        "G05": 0.6,
+        "G10": 0.8
+      },
+      "info": "Gejala yang spesifik pada keluarnya cairan berbau, gangguan dengar, dan telinga berdenging. Bisa menandakan infeksi kronis.",
+      "solution": "Sangat penting untuk diperiksakan ke dokter untuk mencegah komplikasi. Mungkin diperlukan pembersihan telinga profesional dan antibiotik.",
+      "severity": "Sedang",
+      "duration": "Bisa lama"
     }
   },
   "symptoms": {
-    "G01": "Nyeri telinga yang tajam dan berdenyut",
-    "G02": "Gatal pada telinga",
-    "G03": "Keluarnya cairan dari telinga",
-    "G04": "Pembengkakan di sekitar telinga",
-    "G05": "Sensitivitas saat menyentuh telinga",
-    "G06": "Nyeri telinga yang dalam",
-    "G07": "Demam tinggi",
-    "G08": "Telinga terasa penuh",
-    "G09": "Gangguan pendengaran sementara",
-    "G10": "Mual atau muntah",
-    "G11": "Pendengaran berkurang",
-    "G12": "Telinga terasa tersumbat",
-    "G13": "Sensasi penuh di telinga",
-    "G14": "Bau tidak sedap dari telinga",
-    "G15": "Telinga berdenging terus-menerus",
-    "G16": "Pusing atau vertigo",
-    "G17": "Sulit berkonsentrasi",
-    "G18": "Kehilangan keseimbangan"
+    "G01": "Gatal pada liang telinga",
+    "G02": "Sakit, terutama saat telinga disentuh atau ditarik",
+    "G03": "Keluar cairan bening pada telinga",
+    "G04": "Keluar cairan berwarna kuning atau bening dan berbau",
+    "G05": "Gangguan pendengaran (Pendengaran menurun)",
+    "G06": "Telinga terasa penuh atau tersumbat",
+    "G07": "Demam",
+    "G08": "Muncul benjolan dileher atau sekitar telinga",
+    "G09": "Vertigo dan pusing",
+    "G10": "Telinga berdenging",
+    "G11": "Nyeri Telinga",
+    "G12": "Demam disertai pilek"
   },
-  "last_updated": "2025-05-27T11:27:48.745005"
+  "last_updated": "2025-06-17T20:49:00.394998"
 }
