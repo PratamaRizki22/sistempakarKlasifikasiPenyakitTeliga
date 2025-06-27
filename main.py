@@ -40,7 +40,6 @@ class EarDiagnosisSystem:
         self.load_stats()
 
     def load_data(self):
-        """Load data dari file JSON"""
         if os.path.exists(self.data_file):
             try:
                 with open(self.data_file, 'r', encoding='utf-8') as f:
@@ -54,7 +53,6 @@ class EarDiagnosisSystem:
             self.create_default_data()
 
     def save_data(self):
-        """Simpan data ke file JSON"""
         data = {
             'diseases': self.diseases,
             'symptoms': self.symptoms,
@@ -69,7 +67,6 @@ class EarDiagnosisSystem:
             return False
 
     def load_stats(self):
-        """Load statistik konsultasi"""
         if os.path.exists(self.stats_file):
             try:
                 with open(self.stats_file, 'r', encoding='utf-8') as f:
@@ -80,7 +77,6 @@ class EarDiagnosisSystem:
                 print(f"Error loading stats: {e}")
 
     def save_stats(self):
-        """Simpan statistik konsultasi"""
         stats = {
             'consultation_count': self.consultation_count,
             'disease_stats': self.disease_stats,
@@ -93,10 +89,7 @@ class EarDiagnosisSystem:
             print(f"Error saving stats: {e}")
 
     def create_default_data(self):
-            """
-            Membuat dan memuat data default untuk gejala dan penyakit
-            disesuaikan dengan tabel yang diberikan.
-            """
+
             self.symptoms = {
                 'G01': 'Gatal pada liang telinga',
                 'G02': 'Sakit, terutama saat telinga disentuh atau ditarik',
@@ -172,7 +165,6 @@ class EarDiagnosisSystem:
             self.save_data()
 
     def get_symptoms_list(self):
-        """Ambil daftar gejala dengan format yang lebih menarik"""
         if not self.symptoms:
             return "❌ Tidak ada gejala yang tersedia."
         
@@ -231,7 +223,6 @@ class EarDiagnosisSystem:
         return result
 
     def get_diseases_list(self):
-        """Ambil daftar penyakit dengan format yang lebih menarik"""
         if not self.diseases:
             return "❌ Tidak ada penyakit yang tersedia."
         
@@ -260,7 +251,6 @@ class EarDiagnosisSystem:
         return result
 
     def get_consultation_stats(self):
-        """Ambil statistik konsultasi dengan format yang lebih menarik"""
         result = f"# 📊 Statistik Konsultasi Sistem\n\n"
         
         result += f"## 📈 Statistik Umum\n"
@@ -295,10 +285,7 @@ class EarDiagnosisSystem:
         return result
 
     def process_diagnosis(self, *args):
-        """
-        PERBAIKAN KRITIS: Forward chaining dengan CF calculation yang benar
-        """
-        # Hanya gunakan gejala yang benar-benar ada (G01-G12)
+
         symptom_mapping = [
             'G01', 'G02', 'G05', 'G06',    # Grup 1: 4 gejala
             'G08', 'G09', 'G11', 'G12',    # Grup 2: 4 gejala  
@@ -398,9 +385,6 @@ class EarDiagnosisSystem:
         return selected_text, diagnosis_text, solution_text, updated_stats
     
     def update_consultation_stats(self, top_disease_name):
-        """
-        PERBAIKAN: Thread-safe update statistics dengan batch saving
-        """
         with self.stats_lock:
             try:
                 self.consultation_count += 1
@@ -416,9 +400,7 @@ class EarDiagnosisSystem:
                 print(f"ERROR updating stats: {e}")
 
     def save_stats_safely(self):
-        """
-        PERBAIKAN: Thread-safe file saving dengan backup
-        """
+
         stats_data = {
             'consultation_count': self.consultation_count,
             'disease_stats': self.disease_stats.copy(), 
@@ -465,9 +447,7 @@ class EarDiagnosisSystem:
             return False
 
     def load_stats_safely(self):
-        """
-        PERBAIKAN: Robust stats loading dengan fallback
-        """
+
         stats_files = [
             self.stats_file,
             self.stats_file + '.backup',
@@ -502,18 +482,6 @@ class EarDiagnosisSystem:
         return False
 
     def forward_chaining_inference(self, selected_symptoms):
-        """
-        BARU: Implementasi forward chaining inference engine
-        
-        Forward chaining: dari fakta yang diketahui → kesimpulan baru
-        Rules: IF (condition1 AND condition2...) THEN conclusion
-        
-        Args:
-            selected_symptoms: Dict of selected symptoms with severity
-        
-        Returns:
-            tuple: (inferred_facts_set, fired_rules_list)
-        """
         working_memory = set(selected_symptoms.keys())
         fired_rules = []
         
@@ -624,9 +592,7 @@ class EarDiagnosisSystem:
 
 
     def get_inference_explanation(self, fired_rules):
-        """
-        Generate explanation untuk rules yang terpicu
-        """
+
         if not fired_rules:
             return ""
         
@@ -644,18 +610,7 @@ class EarDiagnosisSystem:
 
 
     def calculate_combined_cf(self, disease_symptoms, selected_symptoms, inferred_facts=None):
-        """        
-        Rumus CF gabungan:
-        CF(H,E1∧E2) = CF(H,E1) + CF(H,E2) × [1 - CF(H,E1)]
-        
-        Args:
-            disease_symptoms: Dict symptom code -> base CF value
-            selected_symptoms: Dict symptom code -> severity level
-            inferred_facts: Set of inferred facts from forward chaining
-        
-        Returns:
-            float: Combined CF as percentage (0-100)
-        """
+
         if not disease_symptoms or not selected_symptoms:
             return 0.0
         
@@ -679,7 +634,6 @@ class EarDiagnosisSystem:
                     cf_symptom = min(1.0, cf_symptom)
                     print(f"      With inference boost: {cf_symptom}")
                 
-                # Apply CF combining formula
                 cf_previous = cf_combined
                 if cf_combined == 0.0:
                     cf_combined = cf_symptom
@@ -711,9 +665,7 @@ class EarDiagnosisSystem:
 
 
     def calculate_risk_level(self, cf_percentage, disease_severity):
-        """
-        BARU: Hitung risk level berdasarkan CF dan severity penyakit
-        """
+
         severity_weights = {
             'Tinggi': 1.0,
             'Sedang': 0.7, 
@@ -734,15 +686,11 @@ class EarDiagnosisSystem:
 
     
     def calculate_diagnosis_score(self, result):
-        """
-        Skor diagnosis hanya berdasarkan Confidence Factor (CF) saja.
-        """
+
         return result['confidence']
 
     def format_enhanced_results(self, selected_symptoms, results, fired_rules):
-        """
-        BARU: Enhanced formatting dengan informasi forward chaining
-        """
+
         selected_text = "# 📋 Gejala yang Anda Pilih\n\n"
         selected_text += f"Anda telah memilih **{len(selected_symptoms)} gejala** dengan tingkat keparahan:\n\n"
 
@@ -766,7 +714,6 @@ class EarDiagnosisSystem:
         diagnosis_text += "## 🏆 Ranking Diagnosis:\n\n"
 
     def format_results(self, selected_symptoms, results):
-        """Format hasil diagnosis dengan tampilan CF"""
         selected_text = "# 📋 Gejala yang Anda Pilih\n\n"
         selected_text += f"Anda telah memilih **{len(selected_symptoms)} gejala** berikut:\n\n"
 
