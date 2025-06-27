@@ -732,29 +732,6 @@ class EarDiagnosisSystem:
         else:
             return "⚪ RISK MINIMAL"
 
-
-    # def calculate_diagnosis_score(self, result):
-    #     """
-    #     PERBAIKAN: Multi-criteria scoring untuk ranking diagnosis
-    #     """
-    #     confidence_weight = 0.4     
-    #     match_ratio_weight = 0.3     
-    #     severity_weight = 0.2        
-    #     rule_weight = 0.1           
-        
-    #     severity_scores = {'Tinggi': 100, 'Sedang': 70, 'Ringan': 40}
-    #     severity_score = severity_scores.get(result['severity'], 50)
-        
-    #     rule_score = len(result.get('fired_rules', [])) * 10
-        
-    #     total_score = (
-    #         result['confidence'] * confidence_weight +
-    #         result['match_ratio'] * match_ratio_weight +
-    #         severity_score * severity_weight +
-    #         min(rule_score, 50) * rule_weight 
-    #     )
-        
-    #     return total_score
     
     def calculate_diagnosis_score(self, result):
         """
@@ -836,7 +813,6 @@ class EarDiagnosisSystem:
                 diagnosis_text += f"  - Tingkat: *{user_severity}* → Multiplier: {multiplier}\n"
                 diagnosis_text += f"  - **CF Gejala:** {cf_final:.2f} ({level})\n"
 
-            # Tambahkan perhitungan CF gabungan total
             cf_values = [
                 self.diseases[result['code']]['symptoms'][code] * self.severity_multipliers.get(selected_symptoms[code], 0.5)
                 for code in result['matching_symptoms']
@@ -871,13 +847,6 @@ class EarDiagnosisSystem:
                 severity_score * w_severity +
                 rule_score_raw * w_rule
             )
-
-            # diagnosis_text += f"\n🧮 **Rincian Skor Diagnosis:**\n"
-            # diagnosis_text += f"- Confidence Factor (CF): {cf:.1f}% × {w_cf} = **{cf * w_cf:.1f}**\n"
-            # diagnosis_text += f"- Match Ratio: {match_ratio:.1f}% × {w_match} = **{match_ratio * w_match:.1f}**\n"
-            # diagnosis_text += f"- Severity ({severity}): {severity_score} × {w_severity} = **{severity_score * w_severity:.1f}**\n"
-            # diagnosis_text += f"- Rule Score: {rule_score_raw} × {w_rule} = **{rule_score_raw * w_rule:.1f}**\n"
-            # diagnosis_text += f"➡️ **Total Skor Diagnosis**: **{diagnosis_score:.1f} / 100**\n"
 
             diagnosis_text += f"\n🧮 **Skor Diagnosis Berdasarkan CF:** {cf:.1f}%\n"
 
